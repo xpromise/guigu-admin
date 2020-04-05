@@ -62,7 +62,7 @@ function AddMenuForm({ hidden, parentMenu, addMenu }) {
               const Icon = iconsValues[index];
               return (
                 <Option value={iconKey} key={index}>
-                  <span className="add-menu-option">
+                  <span className="icons-option">
                     <span>{iconKey}</span> &nbsp;&nbsp;
                     <Icon />
                   </span>

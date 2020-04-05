@@ -513,7 +513,7 @@ class Center extends Component {
     return (
       <div className="center">
         <Row gutter={20}>
-          <Col span={6}>
+          <Col span={7}>
             <div className="center-center">
               <div className="center-avator">
                 <Avatar size={100} src={user.avatar} />
@@ -563,7 +563,7 @@ class Center extends Component {
               </div>
             </div>
           </Col>
-          <Col span={18}>
+          <Col span={17}>
             <Card
               style={{ width: "100%" }}
               tabList={tabList}

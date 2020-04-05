@@ -38,3 +38,22 @@ export function reqAssignRoleMenu({ roleId, permissionList }) {
     method: "POST",
   });
 }
+
+// 请求更新菜单
+export function reqUpdateMenu(permission) {
+  return request({
+    url: `${BASE_URL}/update`,
+    data: {
+      permission,
+    },
+    method: "PUT",
+  });
+}
+
+// 请求删除菜单
+export function reqRemoveMenu(id) {
+  return request({
+    url: `${BASE_URL}/remove/${id}`,
+    method: "DELETE",
+  });
+}
