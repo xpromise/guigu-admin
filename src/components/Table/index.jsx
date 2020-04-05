@@ -99,7 +99,8 @@ class Table extends Component {
     if (isScreenfull) {
       screenfull.exit();
     } else {
-      screenfull.request(container);
+      // 注意是 container.current
+      screenfull.request(container.current);
     }
   };
 

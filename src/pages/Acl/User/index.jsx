@@ -255,7 +255,7 @@ class User extends Component {
           updateSearchValues={this.updateSearchValues}
         />
         <Table
-          container={this.containerRef.current}
+          container={this.containerRef}
           onRefresh={this.refresh}
           title="用户数据列表"
           extra={extra}
