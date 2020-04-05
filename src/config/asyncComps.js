@@ -1,0 +1,35 @@
+import { lazy } from "react";
+
+const Admin = () => lazy(() => import("@pages/Admin"));
+const User = () => lazy(() => import("@pages/Acl/User"));
+const AddOrUpdateUser = () =>
+  lazy(() => import("@pages/Acl/User/components/AddOrUpdateUser"));
+const AssignUser = () =>
+  lazy(() => import("@pages/Acl/User/components/AssignUser"));
+const Role = () => lazy(() => import("@pages/Acl/Role"));
+const Permission = () => lazy(() => import("@pages/Acl/Permission"));
+const SetRoleForm = () => lazy(() => import("@pages/Acl/Role/SetRoleForm"));
+const Chapter = () => lazy(() => import("@pages/Edu/Chapter"));
+const Comment = () => lazy(() => import("@pages/Edu/Comment"));
+const Course = () => lazy(() => import("@pages/Edu/Course"));
+const Subject = () => lazy(() => import("@pages/Edu/Subject"));
+const Teacher = () => lazy(() => import("@pages/Edu/Teacher"));
+const Settings = () => lazy(() => import("@pages/User/Settings"));
+const Center = () => lazy(() => import("@pages/User/Center"));
+
+export default {
+  Admin,
+  User,
+  AddOrUpdateUser,
+  AssignUser,
+  Role,
+  Permission,
+  SetRoleForm,
+  Chapter,
+  Comment,
+  Course,
+  Subject,
+  Teacher,
+  Settings,
+  Center,
+};
