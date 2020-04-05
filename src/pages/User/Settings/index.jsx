@@ -8,7 +8,7 @@ import {
   Button,
   Upload,
   message,
-  Avatar
+  Avatar,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
@@ -17,7 +17,7 @@ import "./index.less";
 
 const { TabPane } = Tabs;
 
-@connect(state => ({ user: state.user }))
+@connect((state) => ({ user: state.user }))
 class Settings extends Component {
   onFinish = () => {};
 
@@ -28,7 +28,7 @@ class Settings extends Component {
       name: "file",
       action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
       headers: {
-        authorization: "authorization-text"
+        authorization: "authorization-text",
       },
       accept: "image/*",
       onChange(info) {
@@ -40,7 +40,7 @@ class Settings extends Component {
         } else if (info.file.status === "error") {
           message.error(`${info.file.name} file upload failed.`);
         }
-      }
+      },
     };
 
     return (
@@ -57,8 +57,8 @@ class Settings extends Component {
                   initialValues={{ nickName: user.nickName }}
                   layout="vertical"
                 >
-                  <Form.Item name="email" label="邮箱">
-                    <Input placeholder="邮箱" />
+                  <Form.Item name="phone" label="手机号">
+                    <Input placeholder="手机号" />
                   </Form.Item>
                   <Form.Item name="nickName" label="昵称">
                     <Input placeholder="昵称" />

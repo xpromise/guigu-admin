@@ -12,7 +12,7 @@ export default function Login() {
       <div>
         <div className="login-header">
           <img src={logo} alt="logo" />
-          <h1>硅谷后台管理系统</h1>
+          <h1>硅谷教育管理系统</h1>
         </div>
         <div className="login-form">
           <LoginForm></LoginForm>
@@ -21,7 +21,7 @@ export default function Login() {
           <span>尚硅谷</span>
           <span>
             Copyright
-            <CopyrightOutlined className="copyright"/>
+            <CopyrightOutlined className="copyright" />
             2020 硅谷前端技术部出品
           </span>
         </div>

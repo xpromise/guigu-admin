@@ -144,7 +144,7 @@ class PrimaryLayout extends Component {
           <div className="logo">
             <img src={logo} alt="logo" />
             <h1 style={{ display: collapsed ? "none" : "block" }}>
-              硅谷后台管理系统
+              硅谷教育管理系统
             </h1>
           </div>
           <SiderMenu routes={routes} defaultOpenKey={route && route.path} />

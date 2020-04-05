@@ -5,7 +5,9 @@ import {
   RedoOutlined,
   SettingOutlined,
   InfoCircleOutlined,
-  PlusOutlined
+  PlusOutlined,
+  FormOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -19,7 +21,7 @@ import "./index.less";
 dayjs.extend(relativeTime);
 
 @connect(
-  state => ({
+  (state) => ({
     // courseList: state.courseList
     // permissionValueList: filterPermissions(
     //   state.course.permissionValueList,
@@ -33,21 +35,21 @@ class Chapter extends Component {
     searchLoading: false,
     previewVisible: false,
     previewImage: "",
-    selectedRowKeys: []
+    selectedRowKeys: [],
   };
 
-  showImgModal = img => {
+  showImgModal = (img) => {
     return () => {
       this.setState({
         previewVisible: true,
-        previewImage: img
+        previewImage: img,
       });
     };
   };
 
   handleImgModal = () => {
     this.setState({
-      previewVisible: false
+      previewVisible: false,
     });
   };
 
@@ -58,14 +60,14 @@ class Chapter extends Component {
 
   handleTableChange = (page, limit) => {
     this.setState({
-      tableLoading: true
+      tableLoading: true,
     });
 
     this.getcourseList({ page, limit }).finally(() => {
       this.setState({
         tableLoading: false,
         page,
-        limit
+        limit,
       });
     });
   };
@@ -73,7 +75,7 @@ class Chapter extends Component {
   getcourseList = ({ page, limit, Coursename, nickName }) => {
     return this.props
       .getcourseList({ page, limit, Coursename, nickName })
-      .then(total => {
+      .then((total) => {
         if (total === 0) {
           message.warning("暂无用户列表数据");
           return;
@@ -82,9 +84,9 @@ class Chapter extends Component {
       });
   };
 
-  onSelectChange = selectedRowKeys => {
+  onSelectChange = (selectedRowKeys) => {
     this.setState({
-      selectedRowKeys
+      selectedRowKeys,
     });
   };
 
@@ -94,33 +96,43 @@ class Chapter extends Component {
     const columns = [
       {
         title: "章节名称",
-        dataIndex: "title"
+        dataIndex: "title",
       },
       {
         title: "是否免费",
         dataIndex: "free",
-        render: isFree => {
+        render: (isFree) => {
           return isFree === true ? "是" : isFree === false ? "否" : "";
-        }
+        },
       },
       {
         title: "操作",
         width: 300,
         fixed: "right",
-        render: data => {
+        render: (data) => {
           if ("free" in data) {
             return (
               <div>
-                <Button type="primary">详情</Button>
-                <Button type="primary" style={{ margin: "0 10px" }}>
-                  更新
-                </Button>
-                <Button type="danger">删除</Button>
+                <Tooltip title="查看详情">
+                  <Button>
+                    <SettingOutlined />
+                  </Button>
+                </Tooltip>
+                <Tooltip title="更新章节">
+                  <Button type="primary" style={{ margin: "0 10px" }}>
+                    <FormOutlined />
+                  </Button>
+                </Tooltip>
+                <Tooltip title="删除章节">
+                  <Button type="danger">
+                    <DeleteOutlined />
+                  </Button>
+                </Tooltip>
               </div>
             );
           }
-        }
-      }
+        },
+      },
     ];
 
     const data = [
@@ -132,21 +144,21 @@ class Chapter extends Component {
             id: "1",
             title: "第一课时",
             free: false,
-            videoSourceId: "756cf06db9cb4f30be85a9758b19c645"
+            videoSourceId: "756cf06db9cb4f30be85a9758b19c645",
           },
           {
             id: "2",
             title: "第二课时",
             free: true,
-            videoSourceId: "2a02d726622f4c7089d44cb993c531e1"
+            videoSourceId: "2a02d726622f4c7089d44cb993c531e1",
           },
           {
             id: "3",
             title: "第三课时",
             free: true,
-            videoSourceId: "4e560c892fdf4fa2b42e0671aa42fa9d"
-          }
-        ]
+            videoSourceId: "4e560c892fdf4fa2b42e0671aa42fa9d",
+          },
+        ],
       },
       {
         id: "222",
@@ -156,21 +168,21 @@ class Chapter extends Component {
             id: "4",
             title: "第一课时",
             free: false,
-            videoSourceId: "756cf06db9cb4f30be85a9758b19c645"
+            videoSourceId: "756cf06db9cb4f30be85a9758b19c645",
           },
           {
             id: "5",
             title: "第二课时",
             free: true,
-            videoSourceId: "2a02d726622f4c7089d44cb993c531e1"
+            videoSourceId: "2a02d726622f4c7089d44cb993c531e1",
           },
           {
             id: "6",
             title: "第三课时",
             free: true,
-            videoSourceId: "4e560c892fdf4fa2b42e0671aa42fa9d"
-          }
-        ]
+            videoSourceId: "4e560c892fdf4fa2b42e0671aa42fa9d",
+          },
+        ],
       },
       {
         id: "333",
@@ -180,27 +192,27 @@ class Chapter extends Component {
             id: "1192252824606289921",
             title: "第一课时",
             free: false,
-            videoSourceId: "756cf06db9cb4f30be85a9758b19c645"
+            videoSourceId: "756cf06db9cb4f30be85a9758b19c645",
           },
           {
             id: "1192628092797730818",
             title: "第二课时",
             free: true,
-            videoSourceId: "2a02d726622f4c7089d44cb993c531e1"
+            videoSourceId: "2a02d726622f4c7089d44cb993c531e1",
           },
           {
             id: "1192632495013380097",
             title: "第三课时",
             free: true,
-            videoSourceId: "4e560c892fdf4fa2b42e0671aa42fa9d"
-          }
-        ]
-      }
+            videoSourceId: "4e560c892fdf4fa2b42e0671aa42fa9d",
+          },
+        ],
+      },
     ];
 
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange
+      onChange: this.onSelectChange,
       // hideDefaultSelections: true,
       // selections: [
       //   Table.SELECTION_ALL,

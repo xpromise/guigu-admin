@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Table, Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Tooltip } from "antd";
+import { PlusOutlined, FormOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import "./index.less";
 
@@ -12,14 +12,14 @@ const subjects = [
       {
         id: "1178214681139539969",
         title: "Java",
-        children: []
+        children: [],
       },
       {
         id: "1178585108407984130",
         title: "Python",
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
     id: "1178214681181483010",
@@ -28,14 +28,14 @@ const subjects = [
       {
         id: "1178214681210843137",
         title: "JavaScript",
-        children: []
+        children: [],
       },
       {
         id: "1178585108454121473",
         title: "HTML/CSS",
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
     id: "1178214681231814658",
@@ -44,14 +44,14 @@ const subjects = [
       {
         id: "1178214681252786178",
         title: "Docker",
-        children: []
+        children: [],
       },
       {
         id: "1178214681294729217",
         title: "Linux",
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
     id: "1178214681324089345",
@@ -60,14 +60,14 @@ const subjects = [
       {
         id: "1178214681353449473",
         title: "Linux",
-        children: []
+        children: [],
       },
       {
         id: "1178214681382809602",
         title: "Windows",
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
     id: "1178214681399586817",
@@ -76,14 +76,14 @@ const subjects = [
       {
         id: "1178214681428946945",
         title: "MySQL",
-        children: []
+        children: [],
       },
       {
         id: "1178214681454112770",
         title: "MongoDB",
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
     id: "1178214681483472898",
@@ -92,14 +92,14 @@ const subjects = [
       {
         id: "1178214681504444418",
         title: "Hadoop",
-        children: []
+        children: [],
       },
       {
         id: "1178214681529610242",
         title: "Spark",
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
     id: "1178214681554776066",
@@ -108,9 +108,9 @@ const subjects = [
       {
         id: "1178214681584136193",
         title: "Python",
-        children: []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
     id: "1178214681613496321",
@@ -119,28 +119,28 @@ const subjects = [
       {
         id: "1178214681626079234",
         title: "Java",
-        children: []
-      }
-    ]
-  }
-].map(item => {
+        children: [],
+      },
+    ],
+  },
+].map((item) => {
   if (!item.children || !item.children.length) {
     return {
       ...item,
-      children: null
+      children: null,
     };
   }
   return {
     ...item,
-    children: item.children.map(item => {
+    children: item.children.map((item) => {
       if (!item.children || !item.children.length) {
         return {
           ...item,
-          children: null
+          children: null,
         };
       }
       return item;
-    })
+    }),
   };
 });
 
@@ -148,21 +148,29 @@ export default class Subject extends Component {
   columns = [
     {
       title: "分类名称",
-      dataIndex: "title"
+      dataIndex: "title",
     },
     {
       title: "操作",
       fixed: "right",
       width: 200,
-      render: data => {
+      render: (data) => {
         return (
           <div>
-            <Button type="primary">修改</Button>
-            <Button type="danger">删除</Button>
+            <Tooltip title="更新课程分类">
+              <Button type="primary" style={{ margin: "0 10px" }}>
+                <FormOutlined />
+              </Button>
+            </Tooltip>
+            <Tooltip title="删除课程分类">
+              <Button type="danger">
+                <DeleteOutlined />
+              </Button>
+            </Tooltip>
           </div>
         );
-      }
-    }
+      },
+    },
   ];
 
   render() {
