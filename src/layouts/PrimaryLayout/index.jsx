@@ -16,6 +16,9 @@ import { AuthorizedRouter } from "@comps/Authorized";
 import { logout } from "@redux/actions/login";
 import logo from "@assets/images/logo.png";
 import { findPathIndex } from "@utils/tools";
+
+// 引入组件公共样式
+import "@assets/css/common.less";
 import "./index.less";
 
 const { Header, Sider, Content } = Layout;

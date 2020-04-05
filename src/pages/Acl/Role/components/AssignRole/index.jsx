@@ -1,42 +1,56 @@
 import React, { Component } from "react";
-import { Tree } from "antd";
+import { Tree, Card, Button, message } from "antd";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { getMenuList } from "../../../Permission/redux";
-import { getAccessRoutes } from "@comps/Authorized/redux";
+import { reqGetRoleMenu, reqAssignRoleMenu } from "@api/acl/permission";
 
 import "./index.less";
 
 @connect(
   (state) => ({
     menuList: state.menuList,
-    permissionList: state.user.permissionList,
   }),
   {
     getMenuList,
-    getAccessRoutes,
   }
 )
-class SetRoleForm extends Component {
+class AssignRole extends Component {
   state = {
     expandedKeys: [],
     treeData: [],
     checkedKeys: [],
   };
 
-  onCheck = () => {};
+  onExpand = (expandedKeys) => {
+    this.setState({
+      expandedKeys,
+    });
+  };
+
+  onCheck = (checkedKeys) => {
+    this.setState({
+      checkedKeys,
+    });
+  };
 
   componentDidMount() {
-    const { menuList, permissionList } = this.props;
+    const {
+      menuList,
+      match: { params },
+    } = this.props;
+
     const promises = [];
 
-    if (!permissionList.length) {
-      promises.push(
-        this.props
-          .getAccessRoutes()
-          .then((res) => ({ type: "permissionList", data: res }))
-      );
-    }
+    promises.push(
+      reqGetRoleMenu(params.id).then((res) => ({
+        type: "permissionList",
+        data: res,
+      }))
+    );
+
     if (!menuList.length) {
       promises.push(
         this.props
@@ -48,8 +62,8 @@ class SetRoleForm extends Component {
     Promise.all(promises).then((result) => {
       const data = {
         menuList,
-        permissionList,
       };
+
       result.forEach((item) => {
         data[item.type] = item.data;
       });
@@ -90,8 +104,6 @@ class SetRoleForm extends Component {
   };
 
   findCheckedKeys = (menus, permissionList) => {
-    console.log(menus, permissionList);
-
     menus = JSON.parse(JSON.stringify(menus));
     const checkedKeys = [];
 
@@ -125,25 +137,49 @@ class SetRoleForm extends Component {
     return checkedKeys;
   };
 
+  assignRole = () => {
+    const { checkedKeys } = this.state;
+    const { id } = this.props.match.params;
+    reqAssignRoleMenu({ permissionList: checkedKeys, roleId: id }).then(() => {
+      message.success("分配角色权限成功");
+      this.props.history.push("/acl/role/list");
+    });
+  };
+
   render() {
     const { expandedKeys, treeData, checkedKeys } = this.state;
     // const { permissionList } = this.props;
 
     return (
-      <div className="set-role-form">
+      <Card
+        title={
+          <>
+            <Link to="/acl/role/list">
+              <ArrowLeftOutlined className="goback" />
+            </Link>
+            <span>设置角色权限</span>
+          </>
+        }
+      >
         <Tree
           checkable
-          // onExpand={onExpand}
           expandedKeys={expandedKeys}
+          onExpand={this.onExpand}
           onCheck={this.onCheck}
           checkedKeys={checkedKeys}
-          // onSelect={onSelect}
-          // selectedKeys={selectedKeys}
           treeData={treeData}
+          checkStrictly
         />
-      </div>
+        <Button
+          type="primary"
+          className="assign-role-btn"
+          onClick={this.assignRole}
+        >
+          确认
+        </Button>
+      </Card>
     );
   }
 }
 
-export default SetRoleForm;
+export default AssignRole;

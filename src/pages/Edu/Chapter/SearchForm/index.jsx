@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { Form, Input, Select, DatePicker, Button } from "antd";
+import React from "react";
+import { Form, Select, Button } from "antd";
 
 import "./index.less";
 
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 
 function SearchForm() {
   const [form] = Form.useForm();

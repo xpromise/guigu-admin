@@ -6,7 +6,7 @@ const BASE_URL = "/admin/acl/permission";
 export function reqGetMenuList() {
   return request({
     url: `${BASE_URL}`,
-    method: "GET"
+    method: "GET",
   });
 }
 
@@ -15,6 +15,26 @@ export function reqAddMenu(menu) {
   return request({
     url: `${BASE_URL}/save`,
     data: menu,
-    method: "POST"
+    method: "POST",
+  });
+}
+
+// 根据角色获取菜单
+export function reqGetRoleMenu(roleId) {
+  return request({
+    url: `${BASE_URL}/toAssign/${roleId}`,
+    method: "GET",
+  });
+}
+
+// 给角色分配菜单
+export function reqAssignRoleMenu({ roleId, permissionList }) {
+  return request({
+    url: `${BASE_URL}/doAssign`,
+    data: {
+      roleId,
+      permissionList,
+    },
+    method: "POST",
   });
 }

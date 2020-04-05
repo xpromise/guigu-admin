@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button, Card, message } from "antd";
 import { Link } from "react-router-dom";
 
@@ -7,8 +7,6 @@ import { reqRoleData } from "@api/acl/role";
 
 import { connect } from "react-redux";
 import { addRole, updateRole } from "../../redux";
-
-import "./index.less";
 
 const layoutCol = {
   wrapperCol: { md: { span: 5 }, sm: { span: 10 }, xs: { span: 24 } },

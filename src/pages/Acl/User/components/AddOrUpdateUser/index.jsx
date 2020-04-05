@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button, Card, message } from "antd";
 import { Link } from "react-router-dom";
 
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { reqUserData, reqAddUser, reqUpdateUser } from "@api/acl/user";
+import { reqUserData } from "@api/acl/user";
 
 import { connect } from "react-redux";
 import { addUser, updateUser } from "../../redux";
-
-import "./index.less";
 
 const layoutCol = {
   wrapperCol: { md: { span: 5 }, sm: { span: 10 }, xs: { span: 24 } },

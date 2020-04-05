@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  Input,
   Button,
   message,
   List,
@@ -8,13 +7,13 @@ import {
   Modal,
   Comment as AntdComment,
   Checkbox,
-  Alert
+  Alert,
 } from "antd";
 import {
   FullscreenOutlined,
   RedoOutlined,
   SettingOutlined,
-  InfoCircleOutlined
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -25,8 +24,6 @@ import SearchForm from "./SearchForm";
 
 import "./index.less";
 
-const { Search } = Input;
-
 dayjs.extend(relativeTime);
 
 const data = [
@@ -36,18 +33,10 @@ const data = [
       "http://www.gulixueyuan.com/files/default/2020/02-18/082322a1625f815098.jpg",
     content: <p>讲的非常好</p>,
     datetime: (
-      <Tooltip
-        title={dayjs()
-          .subtract(4, "day")
-          .format("YYYY-MM-DD HH:mm:ss")}
-      >
-        <span>
-          {dayjs()
-            .subtract(4, "day")
-            .fromNow()}
-        </span>
+      <Tooltip title={dayjs().subtract(4, "day").format("YYYY-MM-DD HH:mm:ss")}>
+        <span>{dayjs().subtract(4, "day").fromNow()}</span>
       </Tooltip>
-    )
+    ),
   },
   {
     author: "出名的猴儿",
@@ -58,12 +47,12 @@ const data = [
       <Tooltip title={dayjs().format("YYYY-MM-DD HH:mm:ss")}>
         <span>{dayjs().fromNow()}</span>
       </Tooltip>
-    )
-  }
+    ),
+  },
 ];
 
 @connect(
-  state => ({
+  (state) => ({
     // courseList: state.courseList
     // permissionValueList: filterPermissions(
     //   state.course.permissionValueList,
@@ -77,21 +66,21 @@ class Comment extends Component {
     searchLoading: false,
     previewVisible: false,
     previewImage: "",
-    checkedValues: []
+    checkedValues: [],
   };
 
-  showImgModal = img => {
+  showImgModal = (img) => {
     return () => {
       this.setState({
         previewVisible: true,
-        previewImage: img
+        previewImage: img,
       });
     };
   };
 
   handleImgModal = () => {
     this.setState({
-      previewVisible: false
+      previewVisible: false,
     });
   };
 
@@ -102,14 +91,14 @@ class Comment extends Component {
 
   handleTableChange = (page, limit) => {
     this.setState({
-      tableLoading: true
+      tableLoading: true,
     });
 
     this.getcourseList({ page, limit }).finally(() => {
       this.setState({
         tableLoading: false,
         page,
-        limit
+        limit,
       });
     });
   };
@@ -117,7 +106,7 @@ class Comment extends Component {
   getcourseList = ({ page, limit, Coursename, nickName }) => {
     return this.props
       .getcourseList({ page, limit, Coursename, nickName })
-      .then(total => {
+      .then((total) => {
         if (total === 0) {
           message.warning("暂无用户列表数据");
           return;
@@ -126,10 +115,10 @@ class Comment extends Component {
       });
   };
 
-  onChange = checkedValues => {
+  onChange = (checkedValues) => {
     console.log("checked = ", checkedValues);
     this.setState({
-      checkedValues
+      checkedValues,
     });
   };
 
@@ -175,7 +164,7 @@ class Comment extends Component {
               header={`一共${data.length}条评论`}
               itemLayout="horizontal"
               dataSource={data}
-              renderItem={item => (
+              renderItem={(item) => (
                 <div className="comment-item">
                   <div className="comment-item-checkbox">
                     <Checkbox value={item.author} />
@@ -184,7 +173,7 @@ class Comment extends Component {
                     <List.Item
                       actions={[
                         <Button type="primary">编辑</Button>,
-                        <Button type="danger">删除</Button>
+                        <Button type="danger">删除</Button>,
                       ]}
                     >
                       <AntdComment

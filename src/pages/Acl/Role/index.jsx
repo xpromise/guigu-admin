@@ -40,9 +40,9 @@ class Role extends Component {
   containerRef = createRef();
 
   // 设置角色权限
-  showSetRole = (role) => {
+  showAssignRole = (id) => {
     return () => {
-      this.props.history.push("/acl/role/auth/" + role._id);
+      this.props.history.push("/acl/role/assign/" + id);
     };
   };
 
@@ -97,7 +97,7 @@ class Role extends Component {
       <div>
         {permissionValueList["role.assign"] && (
           <Tooltip title="设置角色权限">
-            <Button onClick={this.showSetRole(role)}>
+            <Button onClick={this.showAssignRole(role._id)}>
               <SettingOutlined />
             </Button>
           </Tooltip>
@@ -146,6 +146,8 @@ class Role extends Component {
   ];
 
   componentDidMount() {
+    const { roleList } = this.props;
+    if (roleList.total) return;
     const { page, limit } = this.state;
     this.handleTableChange(page, limit);
   }
