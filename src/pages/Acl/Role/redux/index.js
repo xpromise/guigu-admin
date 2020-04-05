@@ -1,4 +1,17 @@
 import roleList from "./reducers";
-import { getRoleList } from "./actions";
+import {
+  getRoleList,
+  addRole,
+  updateRole,
+  removeRole,
+  batchRemoveRole,
+} from "./actions";
 
-export { roleList, getRoleList };
+export {
+  roleList,
+  getRoleList,
+  addRole,
+  updateRole,
+  removeRole,
+  batchRemoveRole,
+};

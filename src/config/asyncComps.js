@@ -8,7 +8,10 @@ const AssignUser = () =>
   lazy(() => import("@pages/Acl/User/components/AssignUser"));
 const Role = () => lazy(() => import("@pages/Acl/Role"));
 const Permission = () => lazy(() => import("@pages/Acl/Permission"));
-const SetRoleForm = () => lazy(() => import("@pages/Acl/Role/SetRoleForm"));
+const AssignRole = () =>
+  lazy(() => import("@pages/Acl/Role/components/AssignRole"));
+const AddOrUpdateRole = () =>
+  lazy(() => import("@pages/Acl/Role/components/AddOrUpdateRole"));
 const Chapter = () => lazy(() => import("@pages/Edu/Chapter"));
 const Comment = () => lazy(() => import("@pages/Edu/Comment"));
 const Course = () => lazy(() => import("@pages/Edu/Course"));
@@ -24,7 +27,8 @@ export default {
   AssignUser,
   Role,
   Permission,
-  SetRoleForm,
+  AssignRole,
+  AddOrUpdateRole,
   Chapter,
   Comment,
   Course,

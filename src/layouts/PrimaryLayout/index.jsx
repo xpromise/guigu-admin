@@ -81,6 +81,9 @@ class PrimaryLayout extends Component {
       if (children && children.length) {
         for (let j = 0; j < children.length; j++) {
           const item = children[j];
+          // 跳过4级菜单
+          if (!item.path) continue;
+
           let path = route.path + item.path;
           /*
             path: /acl/role/list

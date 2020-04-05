@@ -1,19 +1,21 @@
-import React, { Component } from "react";
-import { Input, Button, message, Table } from "antd";
+import React, { Component, createRef } from "react";
+import { Button, message, Tooltip, Modal, Typography } from "antd";
 import {
-  InfoCircleOutlined,
   FormOutlined,
   DeleteOutlined,
+  PlusOutlined,
+  SettingOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 
 import { connect } from "react-redux";
-import { getRoleList } from "./redux";
+import { getRoleList, removeRole, batchRemoveRole } from "./redux";
 
+import Table from "@comps/Table";
+import SearchForm from "./components/SearchForm";
 import { filterPermissions } from "@utils/tools";
 
-import "@assets/common.less";
-
-const { Search } = Input;
+const { Text } = Typography;
 
 @connect(
   (state) => ({
@@ -23,30 +25,19 @@ const { Search } = Input;
       "role"
     ),
   }),
-  { getRoleList }
+  { getRoleList, removeRole, batchRemoveRole }
 )
 class Role extends Component {
   state = {
-    searchLoading: false,
     tableLoading: false,
+    selectedRowKeys: [],
+    searchValues: { roleName: "" },
     page: 1, // 页数
     limit: 10, // 每页显示条数
     role: null, // 设置/更新/删除的role
   };
 
-  search = (searchName) => {
-    this.setState({
-      searchLoading: true,
-    });
-
-    const { page, limit } = this.state;
-
-    this.getRoleList({ roleName: searchName, page, limit }).finally(() => {
-      this.setState({
-        searchLoading: false,
-      });
-    });
-  };
+  containerRef = createRef();
 
   // 设置角色权限
   showSetRole = (role) => {
@@ -55,38 +46,80 @@ class Role extends Component {
     };
   };
 
-  // 更新角色
-  updateRole = (role) => {
-    return () => {
-      this.props.history.push("/acl/role/auth/" + role._id);
-    };
+  batchRemoveRole = () => {
+    const { selectedRowKeys } = this.state;
+
+    Modal.confirm({
+      title: (
+        <span>
+          你确认要删除 <Text type="danger">{selectedRowKeys.length}个</Text>
+          角色数据吗？
+        </span>
+      ),
+      icon: <ExclamationCircleOutlined />,
+      onOk: () => {
+        this.props.batchRemoveRole(selectedRowKeys).then(() => {
+          message.success(`删除 ${selectedRowKeys.length}个 角色数据成功！`);
+        });
+      },
+    });
   };
 
   // 删除角色
   removeRole = (role) => {
-    return () => {};
+    return () => {
+      Modal.confirm({
+        title: (
+          <span>
+            你确认要删除 <Text type="danger">{role.roleName}</Text> 角色数据吗？
+          </span>
+        ),
+        icon: <ExclamationCircleOutlined />,
+        onOk: () => {
+          this.props.removeRole(role._id).then(() => {
+            message.success(`删除 ${role.roleName} 角色数据成功！`);
+          });
+        },
+      });
+    };
+  };
+
+  showUpdateRole = (id) => {
+    return () => {
+      this.props.history.push("/acl/role/update/" + id);
+    };
   };
 
   renderTableItem = (role) => {
-    // const { permissionValueList } = this.props;
+    const { permissionValueList } = this.props;
 
     return (
       <div>
-        {/* {permissionValueList["role.detail"] && ( */}
-        <Button onClick={this.showSetRole(role)}>
-          <InfoCircleOutlined />
-        </Button>
-        {/* )} */}
-        {/* {permissionValueList["role.edit"] && ( */}
-        <Button type="primary" className="acl-edit-btn">
-          <FormOutlined />
-        </Button>
-        {/* )} */}
-        {/* {permissionValueList["role.remove"] && ( */}
-        <Button type="danger">
-          <DeleteOutlined />
-        </Button>
-        {/* )} */}
+        {permissionValueList["role.assign"] && (
+          <Tooltip title="设置角色权限">
+            <Button onClick={this.showSetRole(role)}>
+              <SettingOutlined />
+            </Button>
+          </Tooltip>
+        )}
+        {permissionValueList["role.update"] && (
+          <Tooltip title="更新角色">
+            <Button
+              type="primary"
+              style={{ margin: "0 10px" }}
+              onClick={this.showUpdateRole(role._id)}
+            >
+              <FormOutlined />
+            </Button>
+          </Tooltip>
+        )}
+        {permissionValueList["role.remove"] && (
+          <Tooltip title="删除角色">
+            <Button type="danger" onClick={this.removeRole(role)}>
+              <DeleteOutlined />
+            </Button>
+          </Tooltip>
+        )}
       </div>
     );
   };
@@ -99,21 +132,18 @@ class Role extends Component {
     {
       title: "角色名称",
       dataIndex: "roleName",
-      width: "70%",
+    },
+    {
+      title: "昵称",
+      dataIndex: "remark",
     },
     {
       title: "操作",
+      width: 200,
+      fix: "right",
       render: this.renderTableItem,
     },
   ];
-
-  selectRow = (selectedRowKeys, selectedRows) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  };
 
   componentDidMount() {
     const { page, limit } = this.state;
@@ -144,12 +174,57 @@ class Role extends Component {
     });
   };
 
+  onSelectChange = (selectedRowKeys) => {
+    this.setState({
+      selectedRowKeys,
+    });
+  };
+
+  showAddRole = () => {
+    this.props.history.push("/acl/role/add");
+  };
+
+  handleExtraBtns = (permissionValueList) => {
+    const extra = [];
+    if (permissionValueList["role.add"]) {
+      extra.push(
+        <Button type="primary" key="0" onClick={this.showAddRole}>
+          <PlusOutlined />
+          <span>新增</span>
+        </Button>
+      );
+    }
+
+    if (permissionValueList["role.remove"]) {
+      extra.push(
+        <Button type="danger" key="1" onClick={this.batchRemoveRole}>
+          <span>批量删除</span>
+        </Button>
+      );
+    }
+
+    return extra;
+  };
+
+  updateSearchValues = (searchValues) => {
+    this.setState({
+      searchValues,
+    });
+  };
+
+  refresh = () => {
+    const { page, limit } = this.state;
+    this.getRoleList({ page, limit }).then(() => {
+      message.success("刷新数据成功！");
+    });
+  };
+
   render() {
-    const { searchLoading, page, limit, tableLoading } = this.state;
+    const { page, limit, tableLoading, selectedRowKeys } = this.state;
 
     let {
       roleList: { items, total },
-      // permissionValueList,
+      permissionValueList,
     } = this.props;
 
     const roleList = items.map((item, index) => {
@@ -159,33 +234,22 @@ class Role extends Component {
       };
     });
 
-    return (
-      <div className="acl">
-        <div className="acl-search-wrap">
-          <Search
-            placeholder="用户名"
-            enterButton="搜索"
-            onSearch={this.search}
-            className="acl-search"
-            loading={searchLoading}
-          />
-        </div>
-        <div className="acl-btn-wrap">
-          {/* {permissionValueList["role.add"] && ( */}
-          <Button className="acl-add-btn" type="danger">
-            添加
-          </Button>
-          {/* )} */}
-          {/* {permissionValueList["role.remove"] && ( */}
-          <Button type="danger">批量删除</Button>
-          {/* )} */}
-        </div>
+    const extra = this.handleExtraBtns(permissionValueList);
 
+    return (
+      <div ref={this.containerRef} style={{ backgroundColor: "#f5f5f5" }}>
+        <SearchForm
+          getRoleList={this.getRoleList}
+          limit={limit}
+          updateSearchValues={this.updateSearchValues}
+        />
         <Table
-          rowSelection={{
-            type: "checkbox",
-            onChange: this.selectRow,
-          }}
+          container={this.containerRef}
+          onRefresh={this.refresh}
+          title="角色数据列表"
+          extra={extra}
+          selectedRowKeys={selectedRowKeys}
+          onSelectChange={this.onSelectChange}
           columns={this.columns}
           dataSource={roleList}
           rowKey="_id"

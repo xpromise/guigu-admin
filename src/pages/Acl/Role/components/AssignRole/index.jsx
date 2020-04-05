@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Tree } from "antd";
 import { connect } from "react-redux";
 
-import { getMenuList } from "../../Permission/redux";
+import { getMenuList } from "../../../Permission/redux";
 import { getAccessRoutes } from "@comps/Authorized/redux";
 
 import "./index.less";
