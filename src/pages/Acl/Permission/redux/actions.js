@@ -18,7 +18,7 @@ const getMenuListSync = (menuList) => ({
 export const getMenuList = () => {
   return (dispatch) => {
     return reqGetMenuList().then((response) => {
-      dispatch(getMenuListSync(response));
+      dispatch(getMenuListSync(response.menuList));
       return response;
     });
   };
